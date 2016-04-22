@@ -3,6 +3,7 @@
 #include<math.h>
 #include<stdlib.h>
 #include<time.h>
+#include<iostream>
 #define MAX_SIZE 1000
 #define WAIT  while(GetTime()==operate_time);
 #define GO   (operate_time=GetTime());
@@ -280,32 +281,32 @@ void greedy() {
 	double check = 1.2*me_radius;
 	if (emergency)return;
 	zw_enshaw();
-	//int temp = MAX_SIZE >> 3;
-	//for (;temp >= 0;--temp) {
-	//	bitmap[temp] = 0;
-	//}
-	//while (true) {
-	//	int next;
-	//	for (next = 0;next < num_of_food;next++) {
-	//		if (!(bitmap[next >> 3] & (0x80 >> (next & 0x07)))) break;
-	//	}
-	//	if (next == num_of_food)break;
-	//	aim[num_of_aim] = food[next];
-	//	bitmap[next >> 3] |= (0x80 >> (next & 0x07));
-	//	int i;
-	//	for (i = 0;i < num_of_food;i++) {
-	//		if (!(bitmap[i >> 3] & (0x80 >> (i & 0x07)))) {
-	//			if (distance(aim[num_of_aim].pos, food[i].pos) < check) {
-	//				/*aim[num_of_aim].pos = multiple(1.0 / (aim[num_of_aim].weight + food[i].weight),
-	//				add(multiple(aim[num_of_aim].weight, aim[num_of_aim].pos), multiple(food[i].weight, food[i].pos)));
-	//				aim[num_of_aim].weight += food[i].weight;*/
-	//				bitmap[i >> 3] |= (0x80 >> (i & 0x07));
-	//			}
-	//		}
-	//	}
-	//	num_of_aim++;
-	//}
-	//qsort(aim, num_of_aim, sizeof(point), zw_cmp);
+	int temp = MAX_SIZE >> 3;
+	for (;temp >= 0;--temp) {
+		bitmap[temp] = 0;
+	}
+	while (true) {
+		int next;
+		for (next = 0;next < num_of_food;next++) {
+			if (!(bitmap[next >> 3] & (0x80 >> (next & 0x07)))) break;
+		}
+		if (next == num_of_food)break;
+		aim[num_of_aim] = food[next];
+		bitmap[next >> 3] |= (0x80 >> (next & 0x07));
+		int i;
+		for (i = 0;i < num_of_food;i++) {
+			if (!(bitmap[i >> 3] & (0x80 >> (i & 0x07)))) {
+				if (distance(aim[num_of_aim].pos, food[i].pos) < check) {
+					/*aim[num_of_aim].pos = multiple(1.0 / (aim[num_of_aim].weight + food[i].weight),
+					add(multiple(aim[num_of_aim].weight, aim[num_of_aim].pos), multiple(food[i].weight, food[i].pos)));
+					aim[num_of_aim].weight += food[i].weight;*/
+					bitmap[i >> 3] |= (0x80 >> (i & 0x07));
+				}
+			}
+		}
+		num_of_aim++;
+	}
+	qsort(aim, num_of_aim, sizeof(point), zw_cmp);
 }
 int zw_cmp(const void* p, const void* q) {
 	Position center = { kMapSize << 1,kMapSize << 1,kMapSize << 1 };
@@ -383,6 +384,8 @@ point mi_zhi_yin_qiu_yang(int n) {
 	}
 }
 void zw_enshaw() {
+	double len = 2*me.radius;
+	int div = 15;
 	num_of_aim = 1;
 	Position force = { 0.0,0.0,0.0 };
 	int n = num_of_food - 1;
@@ -391,8 +394,9 @@ void zw_enshaw() {
 		double k = me_radius / length(point_to);
 		force = add(force, multiple(k*k*food[n].weight*food[n].weight, point_to));
 	}
-	aim[0].pos = add(me.pos, force);
 	aim[0].weight = length(force);
+	aim[0].pos = add(me.pos, multiple(len / aim[0].weight, force));
+	aim[0].weight = aim[0].weight>>div;
 }
 int initial() {
 	me = GetStatus()->objects[0];
