@@ -258,7 +258,7 @@ int update() {
 				else return 0;
 			}
 			else {
-				ad_weight = 1;//2st step of update finish
+				ad_weight = 3;//2st step of update finish
 				if (me.skill_level[LONG_ATTACK] < kMaxSkillLevel) {
 					if (me.ability >= zw_cost(LONG_ATTACK)) {
 						WAIT;
