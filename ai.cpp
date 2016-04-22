@@ -369,7 +369,7 @@ void avoid() {
 }
 void move() {
 	Position speed;
-	double mode = (kMaxMoveSpeed + kDashSpeed[me.skill_level[DASH]]) / distance(go_for, me.pos);
+	double mode = (10+kMaxMoveSpeed + kDashSpeed[me.skill_level[DASH]]) / distance(go_for, me.pos);
 	speed = multiple(mode, minus(go_for, me.pos));
 	Move(me.id, speed);
 	last_move = norm(speed);
@@ -388,11 +388,11 @@ void zw_enshaw() {
 	int n = num_of_food - 1;
 	for (;n >= 0;n--) {
 		Position point_to = minus(food[n].pos, me.pos);
-		double k = 2.5*me_radius / length(point_to);
-		force = add(force, multiple(k*k*food[n].weight, point_to));
+		double k = me_radius / length(point_to);
+		force = add(force, multiple(k*k*food[n].weight*food[n].weight, point_to));
 	}
 	aim[0].pos = add(me.pos, force);
-	aim[0].weight = en_weight;
+	aim[0].weight = length(force);
 }
 int initial() {
 	me = GetStatus()->objects[0];
