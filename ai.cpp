@@ -279,33 +279,33 @@ int update() {
 void greedy() {
 	double check = 1.2*me_radius;
 	if (emergency)return;
-	//zw_enshaw();
-	int temp = MAX_SIZE >> 3;
-	for (;temp >= 0;--temp) {
-		bitmap[temp] = 0;
-	}
-	while (true) {
-		int next;
-		for (next = 0;next < num_of_food;next++) {
-			if (!(bitmap[next >> 3] & (0x80 >> (next & 0x07)))) break;
-		}
-		if (next == num_of_food)break;
-		aim[num_of_aim] = food[next];
-		bitmap[next >> 3] |= (0x80 >> (next & 0x07));
-		int i;
-		for (i = 0;i < num_of_food;i++) {
-			if (!(bitmap[i >> 3] & (0x80 >> (i & 0x07)))) {
-				if (distance(aim[num_of_aim].pos, food[i].pos) < check) {
-					/*aim[num_of_aim].pos = multiple(1.0 / (aim[num_of_aim].weight + food[i].weight),
-					add(multiple(aim[num_of_aim].weight, aim[num_of_aim].pos), multiple(food[i].weight, food[i].pos)));
-					aim[num_of_aim].weight += food[i].weight;*/
-					bitmap[i >> 3] |= (0x80 >> (i & 0x07));
-				}
-			}
-		}
-		num_of_aim++;
-	}
-	qsort(aim, num_of_aim, sizeof(point), zw_cmp);
+	zw_enshaw();
+	//int temp = MAX_SIZE >> 3;
+	//for (;temp >= 0;--temp) {
+	//	bitmap[temp] = 0;
+	//}
+	//while (true) {
+	//	int next;
+	//	for (next = 0;next < num_of_food;next++) {
+	//		if (!(bitmap[next >> 3] & (0x80 >> (next & 0x07)))) break;
+	//	}
+	//	if (next == num_of_food)break;
+	//	aim[num_of_aim] = food[next];
+	//	bitmap[next >> 3] |= (0x80 >> (next & 0x07));
+	//	int i;
+	//	for (i = 0;i < num_of_food;i++) {
+	//		if (!(bitmap[i >> 3] & (0x80 >> (i & 0x07)))) {
+	//			if (distance(aim[num_of_aim].pos, food[i].pos) < check) {
+	//				/*aim[num_of_aim].pos = multiple(1.0 / (aim[num_of_aim].weight + food[i].weight),
+	//				add(multiple(aim[num_of_aim].weight, aim[num_of_aim].pos), multiple(food[i].weight, food[i].pos)));
+	//				aim[num_of_aim].weight += food[i].weight;*/
+	//				bitmap[i >> 3] |= (0x80 >> (i & 0x07));
+	//			}
+	//		}
+	//	}
+	//	num_of_aim++;
+	//}
+	//qsort(aim, num_of_aim, sizeof(point), zw_cmp);
 }
 int zw_cmp(const void* p, const void* q) {
 	Position center = { kMapSize << 1,kMapSize << 1,kMapSize << 1 };
