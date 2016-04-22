@@ -385,7 +385,7 @@ point mi_zhi_yin_qiu_yang(int n) {
 }
 void zw_enshaw() {
 	double len = 2*me.radius;
-	int div = 15;
+	int div = 10;
 	num_of_aim = 1;
 	Position force = { 0.0,0.0,0.0 };
 	int n = num_of_food - 1;
